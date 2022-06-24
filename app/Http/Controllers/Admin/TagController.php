@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class TagController extends Controller
 {
@@ -44,27 +45,7 @@ class TagController extends Controller
         return redirect()->back()->with('message', "Tag $slug added successfully");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Tag $tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Tag  $tag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tag $tag)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -75,7 +56,17 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+         //dd($request->all());
+
+         $val_data = $request->validate([
+            'name' => ['required', Rule::unique('categories')->ignore($tag)]
+        ]);
+        
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        $tag->update($val_data);
+        return redirect()->back()->with('message', "Tag $slug updated successfully");
     }
 
     /**
@@ -86,6 +77,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        
+        return redirect()->back()->with('message', 'Tag $slug added successfully');
     }
 }
