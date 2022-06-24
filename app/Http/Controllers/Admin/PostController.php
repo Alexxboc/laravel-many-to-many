@@ -83,8 +83,10 @@ class PostController extends Controller
     {
         $categories = Category::all();
         //dd($categories);
+        $tags = Tag::all();
+        //dd($tags)
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -103,6 +105,7 @@ class PostController extends Controller
 
             'title' => ['required', Rule::unique('posts')->ignore($post)],
             'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id',
             'cover_image' => 'nullable',
             'content' => 'nullable'
 
@@ -112,8 +115,11 @@ class PostController extends Controller
         $slug = Post::generateSlug($request->title);
         $val_data['slug'] = $slug;
 
-        // create resource
-        Post::create($val_data);
+        //update resource
+        $post->update($val_data);
+
+        $post->tags->sync($request->tags);
+        
         // redirect to a get route
         return redirect()->route('admin.posts.index')->with('message', 'Post Updated Successfully');
     }

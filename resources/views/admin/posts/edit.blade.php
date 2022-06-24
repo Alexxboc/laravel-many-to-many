@@ -26,16 +26,42 @@
         </div>
     </div>
     <div class="mb-4">
-        <label for="category_id" class="form-label">Category</label>
+        <label for="category_id" class="form-label @error('category_id') is-invalid @enderror">Category</label>
         <select class="form-control" name="category_id" id="category_id">
+            <option value="">Select a category</option>
             <option value="">Select a category</option>
             @if($post->category_id == null)
 
             @foreach($categories as $category)
-            <option value="{{$category->id}}" {{$category->id == old('category_id', $post->category->id) ? 'selected' : ''}}>{{$category->name}}</option>
-            @endforeach
             
+            <option value="{{$category->id}}">{{$category->name}}</option>
+            
+            @endforeach
+
+            @else 
+            @foreach($categories as $category)
+            
+            <option value="{{$category->id}}" {{$category->id == old('category_id', $post->category->id) ? 'selected' : ''}} >{{$category->name}}</option>
+            
+            @endforeach
             @endif
+        </select>
+    </div>
+    <div class="mb-4">
+        <label for="tags" class="form-label">City</label>
+        <select multiple class="form-select" name="tags[]" id="tags" aria-label="tags">
+            <option value="" disabled>Select a tag</option>
+            @forelse($tags as $tag)
+
+            @if($errors->any())
+            <option value="{{$tag->id}}" {{ in_array($tag->id, old('tags')) ? 'selected' : '' }}>{{ $tag->name }}</option>
+            @else
+            <option value="{{$tag->id}}" {{ $post->tags->contains($tag->id) ? 'selected' : '' }}>{{ $tag->name }}</option>
+            @endif
+            @empty
+            <option value="">No Tags</option>
+
+            @endforelse
         </select>
     </div>
     <div class="mb-4">

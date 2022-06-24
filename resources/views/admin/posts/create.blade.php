@@ -19,7 +19,7 @@
     </div>
     <div class="mb-4">
       <label for="category_id" class="form-label">Category</label>
-      <select class="form-control" name="category_id" id="category_id">
+      <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
         <option value="">Select a category</option>
         @foreach($categories as $category)
         <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
