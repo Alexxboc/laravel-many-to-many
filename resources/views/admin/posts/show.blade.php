@@ -13,7 +13,7 @@
                 <span>{{$post->category ? $post->category->name : 'N/A'}}</span>
             </div>
             <div class="tags">
-                @if(count($post->tags) > 0))
+                @if(count($post->tags) > 0)
                 <strong>Tags:</strong>
                 @foreach($post->tags as $tag)
                 <span>#{{$tag->name}}</span>
