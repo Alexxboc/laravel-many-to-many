@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -21,15 +22,7 @@ class TagController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +32,16 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $val_data = $request->validate([
+            'name' => 'required|unique:categories'
+        ]);
+
+        $slug = Str::slug($request->name);
+        $val_data['slug'] = $slug;
+
+        Tag::create($val_data);
+
+        return redirect()->back()->with('message', "Tag $slug added successfully");
     }
 
     /**

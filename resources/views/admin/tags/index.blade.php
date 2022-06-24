@@ -13,7 +13,7 @@
             <form action="{{route('admin.tags.store')}}" method="post" class="d-flex align-items-center">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="text" name="name" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <input type="text" name="name" class="form-control" placeholder="Add a new tag" aria-label="Add a new tag" aria-describedby="button-addon2">
                     <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Add</button>
                 </div>
             </form>
