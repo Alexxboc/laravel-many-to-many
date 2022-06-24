@@ -55,7 +55,8 @@ class PostController extends Controller
         $val_data['slug'] = $slug;
 
         // create resource
-        Post::create($val_data);
+        $new_post = Post::create($val_data);
+        $new_post->tags()->attach($request->tags);
         // redirect to a get route
         return redirect()->route('admin.posts.index')->with('message', 'Post Created Successfully');
     }
@@ -67,7 +68,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
-    {
+    {   
+        //dd($post->tags);
         return view('admin.posts.show', compact('post'));
     }
 
