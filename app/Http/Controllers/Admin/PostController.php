@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -53,6 +54,23 @@ class PostController extends Controller
         // Gererate slugs
         $slug = Post::generateSlug($request->title);
         $val_data['slug'] = $slug;
+
+        //verify if request contains the file
+        //dd($request->hasFile('cover_image'));
+        if($request->hasFile('cover_image')) {
+            //validate file
+            $request->validate([
+                'cover_image' => 'nullable|image|max:250'
+            ]);
+            //save in filesystem
+            //dd($request->all());
+            $path = Storage::put('post_images', $request->cover_image);
+            //dd($path);
+            //Pass path to validation array
+            $val_data['cover_image'] = $path;
+        }
+
+        //dd($val_data);
 
         // create resource
         $new_post = Post::create($val_data);
