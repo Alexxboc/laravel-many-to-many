@@ -15,7 +15,7 @@
     <div class="mb-4">
         <label for="cover_image">cover_image</label>
         <input type="file" name="cover_image" id="cover_image" class="form-control  @error('cover_image') is-invalid @enderror" placeholder="Learn php article" aria-describedby="cover_imageHelper">
-        <small id="cover_imageHelper" class="text-muted">Type the post cover_image</small>
+        <small id="cover_imageHelper" class="text-muted">Choose file</small>
     </div>
     <div class="mb-4">
       <label for="category_id" class="form-label">Category</label>
