@@ -1,10 +1,10 @@
 @component('mail::message')
 # Introduction
 
-Posts updated.
+Post {{$postSlug}} has been updated!
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::button', ['url' => $postUrl])
+View Post
 @endcomponent
 
 Thanks,<br>

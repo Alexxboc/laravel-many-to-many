@@ -30,10 +30,10 @@ class PostUpdatedAdminMessage extends Mailable
     public function build()
     {
         return $this 
-        ->markdown('mail.markdown.admin-postupdated')
+        ->markdown('mails.markdown.admin-postupdated')
         ->with([
         'postSlug'  => $this->post->slug,
-        'postUrl' => env('APP_URL') . '/posts/' . $this->post->slug
+        'postUrl' => env('APP_URL') . '/admin/posts/' . $this->post->slug
         ]);
     }
 }
