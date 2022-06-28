@@ -33,6 +33,6 @@ class NewPostCreated extends Mailable
         return $this
         ->from('boccardi.alessandro@gmail.com')
         ->subject('A new post created')
-        ->view('mails.post-created');
+        ->view('mails.posts.created');
     }
 }

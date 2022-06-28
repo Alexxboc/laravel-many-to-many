@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Post;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
+use App\Mail\NewPostCreated;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+
 
 class PostController extends Controller
 {
@@ -75,6 +78,14 @@ class PostController extends Controller
         // create resource
         $new_post = Post::create($val_data);
         $new_post->tags()->attach($request->tags);
+
+        //Mail preview
+        //return (new NewPostCreated($new_post))->render();
+
+        //Send mail
+        Mail::to($request->user())->send(new NewPostCreated($new_post)); //First option
+        //Mail::to('test@example.com')->send(new NewPostcreated($new_post)); //Second option
+
         // redirect to a get route
         return redirect()->route('admin.posts.index')->with('message', 'Post Created Successfully');
     }
