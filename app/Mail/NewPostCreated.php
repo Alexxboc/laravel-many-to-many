@@ -2,23 +2,25 @@
 
 namespace App\Mail;
 
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+
 class NewPostCreated extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $post;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Post $post)
     {
-        //
+        $this->post = $post;
     }
 
     /**
@@ -28,6 +30,9 @@ class NewPostCreated extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this
+        ->from('boccardi.alessandro@gmail.com')
+        ->subject('A new post created')
+        ->view('mails.post-created');
     }
 }
