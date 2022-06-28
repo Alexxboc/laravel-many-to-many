@@ -6,11 +6,13 @@ use App\Models\Post;
 use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
 use App\Mail\NewPostCreated;
+use App\Mail\PostUpdatedAdminMessage;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+
 
 
 class PostController extends Controller
@@ -122,7 +124,7 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
+     * @param  \App\Models|Post  $post
      * @return \Illuminate\Http\Response
      */
     public function update(PostRequest $request, Post $post)
@@ -165,6 +167,12 @@ class PostController extends Controller
         $post->update($val_data);
 
         $post->tags()->sync($request->tags);
+
+        //Mail Preview
+        //return (new PostUpdatedAdminMessage($post))->render();
+
+        //Send mail
+        Mail::to('admin@boolpress.it')->send(new PostUpdatedAdminMessage($post));
         
         // redirect to a get route
         return redirect()->route('admin.posts.index')->with('message', 'Post Updated Successfully');
