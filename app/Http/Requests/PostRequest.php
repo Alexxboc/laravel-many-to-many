@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+
 
 class PostRequest extends FormRequest
 {
@@ -25,7 +28,7 @@ class PostRequest extends FormRequest
     {
 
         return [
-            'title' => ['required', 'unique:posts', 'max:150'],
+            'title' => ['required', Rule::unique('posts', 'title')->ignore($this->post)],
             'category_id' => ['nullable', 'exists:categories,id'],
             'tags' => ['exists:tags,id'],
             'cover_image' => ['nullable'],

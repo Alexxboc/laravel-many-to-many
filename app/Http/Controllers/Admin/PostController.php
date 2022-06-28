@@ -133,10 +133,27 @@ class PostController extends Controller
         $slug = Post::generateSlug($request->title);
         $val_data['slug'] = $slug;
 
+        //verify if request contains the file
+        //dd($request->hasFile('cover_image'));
+        if($request->hasFile('cover_image')) {
+            //validate file
+            $request->validate([
+                'cover_image' => 'nullable|image|max:250'
+            ]);
+            //delete file from filesystem
+            Storage::delete($post->cover_image);
+            //save in filesystem
+            //dd($request->all());
+            $path = Storage::put('post_images', $request->cover_image);
+            //dd($path);
+            //Pass path to validation array
+            $val_data['cover_image'] = $path;
+        }
+
         //update resource
         $post->update($val_data);
 
-        $post->tags->sync($request->tags);
+        $post->tags()->sync($request->tags);
         
         // redirect to a get route
         return redirect()->route('admin.posts.index')->with('message', 'Post Updated Successfully');
